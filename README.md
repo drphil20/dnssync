@@ -48,7 +48,7 @@ backend.php offers the following functions:
 	
 	
 ## MySQL DB Scheme
-* `Definitions(url, ip, isactive, groupname)` url is *PK*
+* `Definitions(url, ip, isactive, groupname)` _PK_ is (*url*, *groupname*)
 * `DNSServers(serverid, localstate, remotestate)` 
 	* serverid (eg {"chris", "phil"}) is *PK*
 	* localstate is Unix Timestamp of last change the DNS Server has acknowledged
