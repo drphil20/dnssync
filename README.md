@@ -39,3 +39,17 @@ example.com/192.168.15.4
 test.com/1.1.1.1
 ```
 creates 2 Groups. One named "GroupName1" and one named "GroupName2"
+
+
+## Backend functions
+backend.php offers the following functions:
+* `backend.php?c=updatedefinition&url=example.com&ip=1.1.1.1` Creates an entry or updates the IP directed to by the url
+	* If IP is left blank, the entry will be deleted (set inactive)
+	
+	
+## MySQL DB Scheme
+* `Definitions(url, ip, isactive)` url is *PK*
+* `DNSServers(serverid, localstate, remotestate)` 
+	* serverid (eg {"chris", "phil"}) is *PK*
+	* localstate is Unix Timestamp of last change the DNS Server has acknowledged
+	* remotestate is Unix Timestamp of last change
