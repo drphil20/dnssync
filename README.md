@@ -7,7 +7,7 @@ Synchronizes DNS Servers and keeps track of their status
 3. DNS Server fetches current state of definitionen once per second
 	* Compares fetched state with local state
 	* If more recent state available, fetch the definitions
-  * Acknowledgment by sending current local state with every state fetching
+  	* Acknowledgment by sending current local state with every state fetching
 	* Also sends its ID, e.g. {"chris" or "phil"}
 4. Display the connection state of the DNS server in Interface:
 	* Small div Box, mit current definition-ID of Online Server and local DNS Servers, colored: 
@@ -29,10 +29,13 @@ Synchronizes DNS Servers and keeps track of their status
 
 ## Example Input for textarea:
 
-New Group: 
-#1-GroupName
-...
-address=/double-click.net/127.0.0.1
-address=/example.com/192.168.15.4
-...
-EOF or new Group
+* `#1-` followed by the groupname creates a new group. 
+Example:
+```
+#1-GroupName1
+double-click.net/127.0.0.1
+example.com/192.168.15.4
+#1-GroupName2
+test.com/1.1.1.1
+```
+creates 2 Groups. One named "GroupName1" and one named "GroupName2"
