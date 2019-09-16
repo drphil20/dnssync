@@ -16,6 +16,7 @@ Synchronizes DNS Servers and keeps track of their status
 		gruen (online, and up-to-date)
 	* Each for DNS Server of Chris und Phil
 	* AJAX in website refreshes the current state of the DNS-servers once per second
+5. User can select which DNS server to syncronize
 
 
 ## Interface: 
@@ -48,7 +49,10 @@ backend.php offers the following functions:
 	
 	
 ## MySQL DB Scheme
-* `Definitions(url, ip, isactive, groupname)` _PK_ is (*url*, *groupname*)
+* `Definitions(url, ip, groupname)` **PK** is (_url_, _groupname_)
+* `Activity(url, groupname, isactive, serverid)` 
+	* **PK** is (_url_, _groupname_, _serverid_) 
+	* **FK** (_url_, _groupname_) to `Definitions`
 * `DNSServers(serverid, localstate, remotestate)` 
 	* serverid (eg {"chris", "phil"}) is *PK*
 	* localstate is Unix Timestamp of last change the DNS Server has acknowledged
