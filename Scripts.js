@@ -2,6 +2,7 @@ selectedDNSServer = ""; //Either {"", "chris", "phil"}; "" means all of them
 
 cachedDefinitions = null;
 websiteCurrentState = null;
+knownRemoteState = null;
 
 function inputIsValid(text) {
     //Checks if the Text entered in the Textarea match the regualar expression to be valid DNS definitions
@@ -32,9 +33,11 @@ function commitTextArea() {
     if ( !tidyInput() ) { return false; }
     alert("Hau raus");
 }
-function loadGroupEdit(groupname) {
+/*function loadGroupEdit(groupname) {
 
-}
+}*/
+
+//Local DNS-State:
 
 //Makes a backend request to get the current state of the Local DNS-Servers and displays them
 function updateLocalDNSStates() {
@@ -50,6 +53,11 @@ function updateLocalDNSStates() {
 //Displays the state of the local DNS-Servers
 function displayNewLocalDNSStates(statesAsJSON) {
     var stateObj = JSON.parse(statesAsJSON);
+
+    //First grab remote state
+    knownRemoteState = stateObj[0]["remotestate"];
+    if (knownRemoteState > cachedDefinitions["remoteState"]) { fetchRemoteDefinitions(); }
+
     for ( i = 0; i < stateObj.length; i++ ) {
         var stateHTMLObj;
         switch( stateObj[i]["serverID"] ) {
@@ -79,6 +87,10 @@ function displayNewLocalDNSStates(statesAsJSON) {
 //Uncomment following to enable automatic updating of states
 //window.setInterval(updateLocalDNSStates, 1000);
 
+
+
+//Update Definitions
+
 function fetchRemoteDefinitions() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -90,7 +102,37 @@ function fetchRemoteDefinitions() {
     xhttp.open("GET", "backend.php?c=getAllDefinitionsAsJSONForWebsite", true);
     xhttp.send();
 }
-function processNewDefinitions()
+//Generates the HTML table showing the definitions and renders it in DOM
+function processNewDefinitions() {
+    var resHTML = "<h2>Current Definitions</h2>\n";
+    if (cachedDefinitions == null) { return "NulL"; }
+
+    //Create HTML
+    var currentGroupName = "";
+    for (i = 0; i < cachedDefinitions.length; i++) {
+        //0. If this is not the first group to begin, close the last
+        if ( currentGroupName != "" && currentGroupName != cachedDefinitions[i]["groupname"] ) {
+            resHTML += "</table></div>";
+        }
+
+        //1. Group Head if this Element is first of new Group
+        if ( currentGroupName != cachedDefinitions[i]["groupname"] ) {
+            currentGroupName = cachedDefinitions[i]["groupname"];
+            resHTML += "<div id=\"" + currentGroupName + "\">";
+            resHTML += "<h3 class=\"groupHeadLine\"><input type=\"checkbox\" name=\"group" + currentGroupName + "\">Group: " + currentGroupName + "</h3>";
+            resHTML += "<table><tr><th>Active</th><th>Domain Name</th><th>IP</th></tr>";
+        }
+
+        //2. Table rows for each element in group
+        resHTML += "<tr><td><input type=\"checkbox\" name=\""+cachedDefinitions[i]["URL"]+"\"></td>";
+        resHTML += "<td>"+cachedDefinitions[i]["URL"]+"</td>";
+        resHTML += "<td>"+cachedDefinitions[i]["IP"]+"</td></tr>";
+    }
+
+    //Insert generated HTML in DOM
+    document.getElementById("Definitions").innerHTML = resHTML;
+}
+
 
 function addDblClickToTableMakingGroupEditable() {
     tables = document.getElementsByTagName("table");
