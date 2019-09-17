@@ -49,19 +49,39 @@ backend.php offers the following functions:
 * `backend.php?c=getCurrentStates` returns the local state (_timestamp_) and connection state ({"online", "offline"}) of all known DNS-Servers as JSON
 * `backend.php?c=setDefActiveFor?url=example.com&gn=ExampleGroup&server=chris`
 	* Sets the isActive Flag for the domain `example.com` in the group `ExampleGroup` for the DNS-Server with the ID `chris`
+* `backend.php?c=getCurrentRemoteState?server=chris?ls=1568710287`
+    * Used by local DNSServer to ask the remoteServer for new definitions and tells it the local state
 ## MySQL DB Scheme
 * `Definitions(url, ip, groupname)` **PK** is (_url_, _groupname_)
 * `Activity(url, groupname, isactive, serverid)` 
 	* **PK** is (_url_, _groupname_, _serverid_) 
 	* **FK** (_url_, _groupname_) to `Definitions`
-* `DNSServers(serverid, localstate, remotestate)` 
+* `DNSServers(serverid, localstate, remotestate, lastRequestTime)` 
 	* serverid (eg {"chris", "phil"}) is *PK*
 	* localstate is Unix Timestamp of last change the DNS Server has acknowledged
 	* remotestate is Unix Timestamp of last change
+	* lastRequestTime is Unix Timestamp of last request for updates
 
 ## SQL commands
-* Insert new Definition, (URL, IP, Groupname, ServerID)
+* Insert new Definition
+    * **Parameters** (URL, IP, Groupname, ServerID)
     * New Definitions are automatically marked active
     * Updates the remotestate in the `DNSServers` table to the current timestamp
-    ```REPLACE INTO Definitions (URL, IP, GROUPNAME) VALUES ($URL, $IP, $Groupname);
-       UPDATE TABLE DNSServers SET REMOTESTATE = UNIX_TIMESTAMP();```
+    ```
+  REPLACE INTO Definitions (URL, IP, GROUPNAME) VALUES ($URL, $IP, $Groupname);
+  UPDATE TABLE DNSServers SET REMOTESTATE = UNIX_TIMESTAMP();
+  REPLACE INTO Activity (URL, GROUPNAME, ISACTIVE, SERVERID) VALUES ($URL, $Groupname, TRUE, $ServerID)
+  ```
+* Get Current States
+    * **Parameters** none
+    * Returns all known DNS-Servers and their current state
+    ```
+    SELECT * FROM DNSServers;
+    ```
+* Get Remote State
+    * **Parameters** (ServerID, localstate)
+    * Answer to local DNS-Server asking for updates
+    ```
+    UPDATE TABLE DNSServers SET LOCALSTATE = $localstate, LASTREQTIME = UNIX_TIMESTAMP() WHERE SERVERID = $ServerID;
+    SELECT REMOTESTATE FROM DNSServers WHERE SERVERID = $ServerID;
+    ```  
