@@ -11,7 +11,7 @@ Synchronizes DNS Servers and keeps track of their status
 	* Also sends its ID, e.g. {"chris" or "phil"}
 4. Display the connection state of the DNS server in Interface:
 	* Small div Box, mit current definition-ID of Online Server and local DNS Servers, colored: 
-		red (online, but *not* up to date)
+		red (online, but **not** up to date)
 		gelb (offline)
 		gruen (online, and up-to-date)
 	* Each for DNS Server of Chris und Phil

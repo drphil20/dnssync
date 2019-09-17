@@ -43,7 +43,31 @@ function updateLocalDNSStates() {
 //Displays the state of the local DNS-Servers
 function displayNewLocalDNSStates(statesAsJSON) {
     var stateObj = JSON.parse(statesAsJSON);
-    document.getElementById("mainInput").value = statesAsJSON;
+    for ( i = 0; i < stateObj.length; i++ ) {
+        var stateHTMLObj;
+        switch( stateObj[i]["serverID"] ) {
+            case "phil":
+                stateHTMLObj = document.getElementById("statePhil");
+                break;
+            case "chris":
+                stateHTMLObj = document.getElementById("stateChris");
+                break;
+            default:
+                document.getElementById("statePhil").innerText = "ERROR";
+                return;
+        }
+        stateHTMLObj.innerText = stateObj[i]["localstate"];
+        if ( !stateObj[i]["isOnline"] ) {
+            stateHTMLObj.style.backgroundColor = "yellow";
+        } else {
+            if ( stateObj[i]["remotestate"] == stateObj[i]["localstate"] ) {
+                stateHTMLObj.style.backgroundColor = "green";
+            }
+            else {
+                stateHTMLObj.style.backgroundColor = "red";
+            }
+        }
+    }
 }
 
 //function sendChangesToServer() {

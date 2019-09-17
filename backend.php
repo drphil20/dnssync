@@ -20,9 +20,9 @@ if ($_GET["c"] == "getCurrentStates") {
         while ($row = $result->fetch_assoc()) {
             $resObj[$i] = array();
             $resObj[$i]["serverID"] = $row["SERVERID"];
-            $resObj[$i]["localstate"] = $row["LOCALSTATE"];
-            $resObj[$i]["remotestate"] = $row["REMOTESTATE"];
-            $resObj[$i]["isOnline"] = ((time() - $row["LASTREQTIME"]) < 10) ? true : false; //True if last request less then 10s ago
+            $resObj[$i]["localstate"] = $row["LOCAL_STATE"];
+            $resObj[$i]["remotestate"] = $row["REMOTE_STATE"];
+            $resObj[$i]["isOnline"] = (time() - $row["LASTREQTIME"]) < 10; //True if last request less then 10s ago
             $i = $i + 1;
         }
         $result->close();
