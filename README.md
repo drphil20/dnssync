@@ -52,10 +52,9 @@ backend.php offers the following functions:
 * `backend.php?c=getCurrentRemoteState?server=chris?ls=1568710287`
     * Used by local DNSServer to ask the remoteServer for new definitions and tells it the local state
 ## MySQL DB Scheme
-* `Definitions(url, ip, groupname)` **PK** is (_url_, _groupname_)
-* `Activity(url, groupname, isactive, serverid)` 
-	* **PK** is (_url_, _groupname_, _serverid_) 
-	* **FK** (_url_, _groupname_) to `Definitions`
+* `Definitions(url, ip, groupname, phil, chris)` 
+    * **PK** is (_url_, _groupname_)
+    * _phil_ and _chris_ are serverIDs, describing whether the definition is active for this Server or not
 * `DNSServers(serverid, localstate, remotestate, lastRequestTime)` 
 	* serverid (eg {"chris", "phil"}) is *PK*
 	* localstate is Unix Timestamp of last change the DNS Server has acknowledged
@@ -68,9 +67,8 @@ backend.php offers the following functions:
     * New Definitions are automatically marked active
     * Updates the remotestate in the `DNSServers` table to the current timestamp
     ```
-  REPLACE INTO Definitions (URL, IP, GROUPNAME) VALUES ($URL, $IP, $Groupname);
+  REPLACE INTO Definitions (URL, IP, GROUPNAME, phil, chris) VALUES ($URL, $IP, $Groupname, 1, 1);
   UPDATE TABLE DNSServers SET REMOTESTATE = UNIX_TIMESTAMP();
-  REPLACE INTO Activity (URL, GROUPNAME, ISACTIVE, SERVERID) VALUES ($URL, $Groupname, TRUE, $ServerID)
   ```
 * Get Current States
     * **Parameters** none
@@ -81,7 +79,14 @@ backend.php offers the following functions:
 * Get Remote State
     * **Parameters** (ServerID, localstate)
     * Answer to local DNS-Server asking for updates
+    * Requires the ServerID to exist in the DB
     ```
     UPDATE TABLE DNSServers SET LOCALSTATE = $localstate, LASTREQTIME = UNIX_TIMESTAMP() WHERE SERVERID = $ServerID;
     SELECT REMOTESTATE FROM DNSServers WHERE SERVERID = $ServerID;
-    ```  
+    ```
+* Set Definition Active for Server
+    * **Parameters** (url, Groupname, ServerID)
+    * ServerID must be element of {"chris", "phil"}
+    ```
+    UPDATE TABLE Definitions SET $ServerID = 1 WHERE URL = $url && GROUPNAME = $GroupName
+    ```
