@@ -41,7 +41,7 @@
     </div>
     <div id="avast">
         <h3 class="groupHeadLine"><input type="checkbox" name="groupavast">Group: avast</h3>
-        <table>
+        <table name="avast">
             <tr>
                 <th>Active</th>
                 <th>Domain Name</th>
@@ -50,7 +50,7 @@
             <tr>
                 <td><input type="checkbox" name="update.avast1.com"></td>
                 <td>update.avast1.com</td>
-                <td>127.0.0.1</td>
+                <td>127.0.0.1</td></div>
             </tr>
             <tr>
                 <td><input type="checkbox" name="up.avast2.de"></td>

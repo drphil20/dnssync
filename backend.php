@@ -8,6 +8,7 @@ if ($mysqli->connect_errno) {
 }
 
 /*
+ * API Method: GetCurrentStates
  * returns the local state (timestamp) and connection state ({"online", "offline"}) of all known DNS-Servers as JSON
  * SQL: SELECT * FROM DNSServers;
  */
@@ -23,6 +24,33 @@ if ($_GET["c"] == "getCurrentStates") {
             $resObj[$i]["localstate"] = $row["LOCAL_STATE"];
             $resObj[$i]["remotestate"] = $row["REMOTE_STATE"];
             $resObj[$i]["isOnline"] = (time() - $row["LASTREQTIME"]) < 10; //True if last request less then 10s ago
+            $i = $i + 1;
+        }
+        $result->close();
+        print( json_encode($resObj) );
+        exit();
+    }
+    else {
+        print("ERROR");
+        exit();
+    }
+}
+
+
+if ($_GET["c"] == "getAllDefinitionsAsJSONForWebsite") {
+    if ($result = $mysqli->query("SELECT * FROM Definitions;")) {
+        /* fetch associative array */
+        $resObj = array();
+
+        $i = 0;
+        while ($row = $result->fetch_assoc()) {
+            $resObj[$i] = array();
+            $resObj[$i]["URL"] = $row["URL"];
+            $resObj[$i]["IP"] = $row["IP"];
+            $resObj[$i]["groupname"] = $row["GROUPNAME"];
+            $resObj[$i]["activeForChris"] = $row["chris"];
+            $resObj[$i]["activeForPhil"] = $row["phil"];
+
             $i = $i + 1;
         }
         $result->close();

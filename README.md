@@ -12,11 +12,11 @@ Synchronizes DNS Servers and keeps track of their status
 4. Display the connection state of the DNS server in Interface:
 	* Small div Box, mit current definition-ID of Online Server and local DNS Servers, colored: 
 		red (online, but **not** up to date)
-		gelb (offline)
-		gruen (online, and up-to-date)
+		yellow (offline)
+		green (online, and up-to-date)
 	* Each for DNS Server of Chris und Phil
 	* AJAX in website refreshes the current state of the DNS-servers once per second
-5. User can select which DNS server to syncronize
+5. User can select which DNS server to synchronize
 
 
 ## Interface: 
@@ -51,6 +51,10 @@ backend.php offers the following functions:
 	* Sets the isActive Flag for the domain `example.com` in the group `ExampleGroup` for the DNS-Server with the ID `chris`
 * `backend.php?c=getCurrentRemoteState?server=chris?ls=1568710287`
     * Used by local DNSServer to ask the remoteServer for new definitions and tells it the local state
+* `backend.php?c=getAllDefinitionsAsJSONForWebsite`
+    * Used by Website to display and manage all definitions
+    * Called on startup of webapp and whenever `remotestate` > `websitestate`
+
 ## MySQL DB Scheme
 * `Definitions(url, ip, groupname, phil, chris)` 
     * **PK** is (_url_, _groupname_)
@@ -89,4 +93,10 @@ backend.php offers the following functions:
     * ServerID must be element of {"chris", "phil"}
     ```
     UPDATE TABLE Definitions SET $ServerID = 1 WHERE URL = $url && GROUPNAME = $GroupName
+    ```
+* Get all remote Definitions
+    * **Parameters** none
+    * Used eg by website to make JSON
+    ```
+    SELECT * FROM Definitions;
     ```

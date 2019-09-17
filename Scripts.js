@@ -1,4 +1,8 @@
 selectedDNSServer = ""; //Either {"", "chris", "phil"}; "" means all of them
+
+cachedDefinitions = null;
+websiteCurrentState = null;
+
 function inputIsValid(text) {
     //Checks if the Text entered in the Textarea match the regualar expression to be valid DNS definitions
     var regEx = new RegExp("^.*\.[a-zA-Z]+\/(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
@@ -27,6 +31,9 @@ function commitTextArea() {
     //Make sure only valid inputs get commited
     if ( !tidyInput() ) { return false; }
     alert("Hau raus");
+}
+function loadGroupEdit(groupname) {
+
 }
 
 //Makes a backend request to get the current state of the Local DNS-Servers and displays them
@@ -72,4 +79,28 @@ function displayNewLocalDNSStates(statesAsJSON) {
 //Uncomment following to enable automatic updating of states
 //window.setInterval(updateLocalDNSStates, 1000);
 
-//function sendChangesToServer() {
+function fetchRemoteDefinitions() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            cachedDefinitions = JSON.parse(this.responseText);
+            processNewDefinitions();
+        }
+    };
+    xhttp.open("GET", "backend.php?c=getAllDefinitionsAsJSONForWebsite", true);
+    xhttp.send();
+}
+function processNewDefinitions()
+
+function addDblClickToTableMakingGroupEditable() {
+    tables = document.getElementsByTagName("table");
+    for (i = 0; i < tables.length; i++) {
+        if (tables[i] != null) {
+            for (var i = 0; i < tables[i].rows.length; i++) {
+                for (var j = 1; j < tables[i].rows[i].cells.length; j++)
+                    tables[i].rows[i].cells[j].ondblclick = function () { loadGroupEdit(tables.name); };
+            }
+        }
+    }
+}
+
