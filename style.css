@@ -1,0 +1,13 @@
+#DefinitionInput {
+    position: relative;
+    font-size: 1em;
+    border: 1px solid black;
+}
+#commitTextArea {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.groupHeadLine {
+    margin-bottom: 0px;
+}
