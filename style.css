@@ -2,6 +2,7 @@
     position: relative;
     font-size: 1em;
     border: 1px solid black;
+    width: 400px;
 }
 #commitTextArea {
     position: absolute;
@@ -10,4 +11,15 @@
 }
 .groupHeadLine {
     margin-bottom: 0px;
+}
+#stateChris {
+    background-color: yellow;
+}
+#statePhil {
+    background-color: yellow;
+}
+#stateIndicator {
+    position: fixed;
+    top: 0px;
+    right: 0px;
 }

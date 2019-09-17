@@ -4,6 +4,10 @@
     <style type="text/css">@import url("style.css");</style>
 </head>
 <body>
+<div id="stateIndicator">
+    <div id="stateChrisField">Chris: <div id="stateChris">1568710287</div></div>
+    <div id="statePhilField">Phil: <div id="statePhil">1568710280</div></div>
+</div>
 <div id="DefinitionInput">
     <h1>DNS definitions:</h1>
     <div id="commitTextArea">
@@ -30,6 +34,31 @@
             <tr>
                 <td><input type="checkbox" name="update.google.de"></td>
                 <td>update.google.de</td>
+                <td>127.0.0.1</td>
+            </tr>
+        </table>
+    </div>
+    <div id="avast">
+        <h3 class="groupHeadLine"><input type="checkbox" name="groupavast">Group: avast</h3>
+        <table>
+            <tr>
+                <th>Active</th>
+                <th>Domain Name</th>
+                <th>IP</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="update.avast1.com"></td>
+                <td>update.avast1.com</td>
+                <td>127.0.0.1</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="up.avast2.de"></td>
+                <td>up.avast2.de</td>
+                <td>127.0.0.1</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="up.avast3.de"></td>
+                <td>up.avast3.de</td>
                 <td>127.0.0.1</td>
             </tr>
         </table>

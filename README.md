@@ -44,10 +44,11 @@ creates 2 Groups. One named "GroupName1" and one named "GroupName2"
 
 ## Backend functions
 backend.php offers the following functions:
-* `backend.php?c=updatedefinition&url=example.com&ip=1.1.1.1` Creates an entry or updates the IP directed to by the url
+* `backend.php?c=updatedefinition&url=example.com&ip=1.1.1.1&gn=ExampleGroup` Creates an entry or updates the IP directed to by the url
 	* If IP is left blank, the entry will be deleted (set inactive)
-	
-	
+* `backend.php?c=getCurrentStates` returns the local state (_timestamp_) and connection state ({"online", "offline"}) of all known DNS-Servers as JSON
+* `backend.php?c=setDefActiveFor?url=example.com&gn=ExampleGroup&server=chris`
+	* Sets the isActive Flag for the domain `example.com` in the group `ExampleGroup` for the DNS-Server with the ID `chris`
 ## MySQL DB Scheme
 * `Definitions(url, ip, groupname)` **PK** is (_url_, _groupname_)
 * `Activity(url, groupname, isactive, serverid)` 
@@ -57,3 +58,10 @@ backend.php offers the following functions:
 	* serverid (eg {"chris", "phil"}) is *PK*
 	* localstate is Unix Timestamp of last change the DNS Server has acknowledged
 	* remotestate is Unix Timestamp of last change
+
+## SQL commands
+* Insert new Definition, (URL, IP, Groupname, ServerID)
+    * New Definitions are automatically marked active
+    * Updates the remotestate in the `DNSServers` table to the current timestamp
+    ```REPLACE INTO Definitions (URL, IP, GROUPNAME) VALUES ($URL, $IP, $Groupname);
+       UPDATE TABLE DNSServers SET REMOTESTATE = UNIX_TIMESTAMP();```
