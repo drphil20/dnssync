@@ -69,6 +69,7 @@ function displayNewLocalDNSStates(statesAsJSON) {
         }
     }
 }
-window.setInterval(updateLocalDNSStates, 1000);
+//Uncomment following to enable automatic updating of states
+//window.setInterval(updateLocalDNSStates, 1000);
 
 //function sendChangesToServer() {

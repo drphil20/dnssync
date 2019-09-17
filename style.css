@@ -18,6 +18,9 @@
 #statePhil {
     background-color: yellow;
 }
+#stateRemote {
+    background-color: aqua;
+}
 #stateIndicator {
     position: fixed;
     top: 0px;

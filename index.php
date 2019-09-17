@@ -7,6 +7,7 @@
 <div id="stateIndicator">
     <div id="stateChrisField">Chris: <div id="stateChris">Not Yet</div></div>
     <div id="statePhilField">Phil: <div id="statePhil">Not Yet</div></div>
+    <div id="stateRemoteField">Remote: <div id="stateRemote">Not Yet</div></div>
 </div>
 <div id="DefinitionInput">
     <h1>DNS definitions:</h1>
