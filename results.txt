@@ -1,3 +1,5 @@
+### Anti-Viruses
+
 # Avast
 v7event.stats.avast.com
 iavs9x.u.avast.com
@@ -35,3 +37,11 @@ provision.ccs.mcafee.com
 download.mcafee.com
 sadownload.mcafee.com
 gti.mcafee.com
+
+### Browsers
+
+# TODO
+
+### Operating Systems
+
+# TODO
