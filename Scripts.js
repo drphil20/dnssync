@@ -43,7 +43,7 @@ function updateLocalDNSStates() {
 //Displays the state of the local DNS-Servers
 function displayNewLocalDNSStates(statesAsJSON) {
     var stateObj = JSON.parse(statesAsJSON);
-    //document.getElementById("demo").innerHTML = stateObj.name;
+    document.getElementById("mainInput").value = statesAsJSON;
 }
 
-function sendChangesToServer() {
+//function sendChangesToServer() {
