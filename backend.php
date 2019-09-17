@@ -90,5 +90,16 @@ if ($_GET["c"] == "setUpdatedDefinitions") {
         throw new Exception('Received content contained invalid JSON!');
     }
 
-    for (  )
+
+    //Updating the DB
+    $i = 0;
+    $query = "";
+    while (!is_null($decoded[$i])) {
+        $query .= "REPLACE into Definitions (URL, IP, GROUPNAME, chris, phil) VALUES ";
+        $query .= "(".$decoded[$i]["URL"].",".$decoded[$i]["IP"].",".$decoded[$i]["GROUPNAME"].",".$decoded[$i]["activeForChris"].",".$decoded[$i]["activeForPhil"].");";
+    }
+    if ($mysqli->multi_query($query)) {
+        print("done: \n\n".$query);
+    }
+
 }
