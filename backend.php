@@ -71,3 +71,4 @@ if ($_GET["c"] == "getAllDefinitionsAsJSONForWebsite") {
         exit();
     }
 }
+

@@ -29,8 +29,64 @@ function tidyInput() {
 }
 function commitTextArea() {
     //Make sure only valid inputs get commited
-    if ( !tidyInput() ) { return false; }
-    alert("Hau raus");
+    if ( !tidyInput() ) { console.log("too dirty"); return false; }
+
+    //1. Parse input and update cached Definitions
+    inputLines = document.getElementById("mainInput").value.split("\n");
+
+    var currentGroup = null;
+    var updated = false;
+    for ( var i = 0; i < inputLines.length; i++) {
+        if ( inputLines[i].substr(0,3) == "#1-" ) {
+            currentGroup = inputLines[i].substr(3);
+            continue;
+        }
+        if ( currentGroup != null && inputLines[i] != "") {
+            var url = inputLines[i].split("/")[0];
+            var ip = inputLines[i].split("/")[1];
+            updated |= updateOrAddCachedDefinitions(currentGroup, url, ip);
+        }
+    }
+
+    //2. Compare to check if changed
+    if ( updated ) {
+        uploadUpdatedDefCache();
+    }
+
+    //3. upload changed definitions
+    //alert("Hau raus");
+}
+function uploadUpdatedDefCache() {
+
+}
+
+function updateOrAddCachedDefinitions(group, url, ip) {
+    var found = false;
+    var changed = false;
+    //1. Point i to first element with selected groupname
+    var i = 0;
+    while(cachedDefinitions[i] != null && cachedDefinitions[i]["groupname"] != group) {
+        i++;
+    }
+    //2. Search within group
+    while(cachedDefinitions[i] != null) {
+        if( cachedDefinitions[i]["URL"] == url ) {
+            found = true;
+            if (cachedDefinitions[i]["IP"] != ip) {     //Update
+                cachedDefinitions[i]["IP"] = ip;
+                changed = true;
+            }
+            break;
+        }
+        i++;
+    }
+    //3. Return results
+    if (!found) {
+        //If not updated, add at the bottom of the list
+        cachedDefinitions[i] = {URL: url, IP: ip, groupname: group, activeForChris: "1", activeForPhil: "1"};
+        changed = true;
+    }
+    return changed;
 }
 
 //Writes the cached definitions of the specified group in the main Input field
@@ -143,10 +199,8 @@ function processNewDefinitions() {
 
     //Add doubleclick event to edit
     addDblClickToTableMakingGroupEditable();
-
     return resHTML;
 }
-
 
 function addDblClickToTableMakingGroupEditable() {
     tables = document.getElementsByTagName("table");
