@@ -1,0 +1,47 @@
+### Anti-Viruses
+
+# Avast
+v7event.stats.avast.com
+iavs9x.u.avast.com
+s-iavs9x.avcdn.net
+v7.stats.avast.com
+additionally: block connection to 8.8.8.8 and 8.8.4.4 (Google DNS Server)
+
+# Network Connection Check (do not block)
+#ncc.avast.com
+
+# Windows Defender
+dodsp.mp.microsoft.com.nsatc.net
+download.windowsupdate.com
+ctldl.windowsupdate.com
+update.microsoft.com
+delivery.mp.microsoft.com
+v10.events.data.microsoft.com
+go.microsoft.com
+#cp601-prod.do.dsp.mp.microsoft.com
+#disc601-prod.do.dsp.mp.microsoft.com
+#prod.do.dsp.mp.microsoft.com
+#geover-prod.do.dsp.mp.microsoft.com
+do.dsp.mp.microsoft.com
+
+# checks if computer has connection to the internet (Windows 10)
+#dns.msftncsi.com
+
+# Kaspersky
+upd.kaspersky.com
+
+# McAfee
+updatekeepalive.mcafee.com
+us.mcafee.com
+provision.ccs.mcafee.com
+download.mcafee.com
+sadownload.mcafee.com
+gti.mcafee.com
+
+### Browsers
+
+# TODO
+
+### Operating Systems
+
+# TODO
