@@ -31,12 +31,12 @@ do.dsp.mp.microsoft.com
 upd.kaspersky.com
 
 # McAfee
-updatekeepalive.mcafee.com
-us.mcafee.com
-provision.ccs.mcafee.com
+#updatekeepalive.mcafee.com
+#us.mcafee.com
+#provision.ccs.mcafee.com
 download.mcafee.com
-sadownload.mcafee.com
-gti.mcafee.com
+#sadownload.mcafee.com
+#gti.mcafee.com
 
 ### Browsers
 
