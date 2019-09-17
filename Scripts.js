@@ -1,3 +1,4 @@
+selectedDNSServer = ""; //Either {"", "chris", "phil"}; "" means all of them
 function inputIsValid(text) {
     //Checks if the Text entered in the Textarea match the regualar expression to be valid DNS definitions
     var regEx = new RegExp("^.*\.[a-zA-Z]+\/(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
@@ -25,8 +26,24 @@ function tidyInput() {
 function commitTextArea() {
     //Make sure only valid inputs get commited
     if ( !tidyInput() ) { return false; }
-    alert("Hau raus")
-
-
+    alert("Hau raus");
 }
-//function sendChangesToServer() {
+
+//Makes a backend request to get the current state of the Local DNS-Servers and displays them
+function updateLocalDNSStates() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            displayNewLocalDNSStates(this.responseText);
+        }
+    };
+    xhttp.open("GET", "backend.php?c=getCurrentStates", true);
+    xhttp.send();
+}
+//Displays the state of the local DNS-Servers
+function displayNewLocalDNSStates(statesAsJSON) {
+    var stateObj = JSON.parse(statesAsJSON);
+    //document.getElementById("demo").innerHTML = stateObj.name;
+}
+
+function sendChangesToServer() {
