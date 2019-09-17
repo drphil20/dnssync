@@ -5,8 +5,8 @@
 </head>
 <body>
 <div id="stateIndicator">
-    <div id="stateChrisField">Chris: <div id="stateChris">1568710287</div></div>
-    <div id="statePhilField">Phil: <div id="statePhil">1568710280</div></div>
+    <div id="stateChrisField">Chris: <div id="stateChris">Not Yet</div></div>
+    <div id="statePhilField">Phil: <div id="statePhil">Not Yet</div></div>
 </div>
 <div id="DefinitionInput">
     <h1>DNS definitions:</h1>
