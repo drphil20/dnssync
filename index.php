@@ -4,10 +4,10 @@
 	<script type="text/JavaScript">
 		function inputIsValid(text) {
 			//Checks if the Text entered in the Textarea match the regualar expression to be valid DNS definitions
-			regEx = new RegExp("^.*\.[a-zA-Z]+\/(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+			let regEx = new RegExp("^.*\.[a-zA-Z]+\/(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
 			
 			//Check each line to match the regEx
-			result = true;
+			var result = true;
 			lines = text.split("\n");
 			for ( i = 0; i < lines.length; i++ ) {
 				if ( lines[i] == "" || lines[i].charAt(0) == "#") { continue; }
