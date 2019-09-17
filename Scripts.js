@@ -1,7 +1,6 @@
 selectedDNSServer = ""; //Either {"", "chris", "phil"}; "" means all of them
 
 cachedDefinitions = null;
-websiteCurrentState = null;
 knownRemoteState = null;
 
 function inputIsValid(text) {
@@ -18,7 +17,7 @@ function inputIsValid(text) {
     return result;
 }
 function tidyInput() {
-    field = document.getElementById("mainInput");
+    var field = document.getElementById("mainInput");
     if ( inputIsValid(field.value) ) {
         field.style.backgroundColor = "#D7FFD7";
         return true;
@@ -33,9 +32,16 @@ function commitTextArea() {
     if ( !tidyInput() ) { return false; }
     alert("Hau raus");
 }
-/*function loadGroupEdit(groupname) {
 
-}*/
+//Writes the cached definitions of the specified group in the main Input field
+function loadGroupEdit(groupname) {
+    var fieldValue = "#1-"+groupname+"\n";
+    for( i = 0; cachedDefinitions[i] != null; i++ ) {
+        if( cachedDefinitions[i]["groupname"] != groupname ) { continue; }
+        fieldValue += cachedDefinitions[i]["URL"] + "/" + cachedDefinitions[i]["IP"] + "\n";
+    }
+    document.getElementById("mainInput").value = fieldValue;
+}
 
 //Local DNS-State:
 
@@ -90,6 +96,9 @@ function displayNewLocalDNSStates(statesAsJSON) {
 
 
 //Update Definitions
+function mockfetch() {
+    cachedDefinitions = JSON.parse("{\"0\":{\"URL\":\"upd.avast2.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"avast\",\"activeForChris\":\"0\",\"activeForPhil\":\"1\"},\"1\":{\"URL\":\"update.avast1.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"avast\",\"activeForChris\":\"0\",\"activeForPhil\":\"1\"},\"2\":{\"URL\":\"up.google.de\",\"IP\":\"192.168.15.4\",\"groupname\":\"Chrome67\",\"activeForChris\":\"1\",\"activeForPhil\":\"0\"},\"3\":{\"URL\":\"update.google.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"Chrome67\",\"activeForChris\":\"1\",\"activeForPhil\":\"0\"},\"remoteState\":\"1569000000\"}");
+}
 
 function fetchRemoteDefinitions() {
     var xhttp = new XMLHttpRequest();
@@ -109,7 +118,7 @@ function processNewDefinitions() {
 
     //Create HTML
     var currentGroupName = "";
-    for (i = 0; i < cachedDefinitions.length; i++) {
+    for (i = 0; cachedDefinitions[i] != null; i++) {
         //0. If this is not the first group to begin, close the last
         if ( currentGroupName != "" && currentGroupName != cachedDefinitions[i]["groupname"] ) {
             resHTML += "</table></div>";
@@ -131,16 +140,23 @@ function processNewDefinitions() {
 
     //Insert generated HTML in DOM
     document.getElementById("Definitions").innerHTML = resHTML;
+
+    //Add doubleclick event to edit
+    addDblClickToTableMakingGroupEditable();
+
+    return resHTML;
 }
 
 
 function addDblClickToTableMakingGroupEditable() {
     tables = document.getElementsByTagName("table");
-    for (i = 0; i < tables.length; i++) {
+    for (let i = 0; i < tables.length; i++) {
         if (tables[i] != null) {
-            for (var i = 0; i < tables[i].rows.length; i++) {
-                for (var j = 1; j < tables[i].rows[i].cells.length; j++)
-                    tables[i].rows[i].cells[j].ondblclick = function () { loadGroupEdit(tables.name); };
+            for (var j = 0; j < tables[i].rows.length; j++) {
+                for (var k = 1; k < tables[i].rows[j].cells.length; k++)
+                    tables[i].rows[j].cells[k].addEventListener('dblclick', function() {
+                        loadGroupEdit( tables[i].parentElement.getAttribute("id"));
+                    }, false);
             }
         }
     }
