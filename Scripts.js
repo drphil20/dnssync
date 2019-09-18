@@ -198,13 +198,14 @@ function processNewDefinitions() {
 
         //2. Table rows for each element in group
         resHTML += "<tr><td><input type=\"checkbox\" value='chris' onclick='activityChange(this, false)' name=\""+cachedDefinitions[i]["URL"]+"\"";
-        resHTML += cachedDefinitions[i]["activeForChris"] ? " checked" : "" + "></td>";
-        resHTML += "<td><input type=\"checkbox\" value='phil' onclick='activityChange(this, false)' name=\""+cachedDefinitions[i]["URL"]+"\"></td>";
-        resHTML += cachedDefinitions[i]["activeForPhil"] ? " checked" : "" + "></td>";
+        resHTML += (cachedDefinitions[i]["activeForChris"] == "1" ? " checked" : "") + "></td>";
+        resHTML += "<td><input type=\"checkbox\" value='phil' onclick='activityChange(this, false)' name=\""+cachedDefinitions[i]["URL"]+"\"";
+        resHTML += (cachedDefinitions[i]["activeForPhil"] == "1" ? " checked" : "") + "></td>";
         resHTML += "<td>"+cachedDefinitions[i]["URL"]+"</td>";
         resHTML += "<td>"+cachedDefinitions[i]["IP"]+"</td></tr>";
     }
 
+    console.log(resHTML);
     //Insert generated HTML in DOM
     document.getElementById("Definitions").innerHTML = resHTML;
 
@@ -233,22 +234,25 @@ function adjustGroupCheckboxTicks() {
                 allTruePhil &= singleBoxes[j].checked;
                 allFalsePhil |= singleBoxes[j].checked;
             }
-            if ( singleBoxes[j].value == "chris" ) {
+            else if ( singleBoxes[j].value == "chris" ) {
                 allTrueChris &= singleBoxes[j].checked;
                 allFalseChris |= singleBoxes[j].checked;
             }
         }
         //Now set group boxes
         groupboxes = groups[i].getElementsByTagName("h3")[0].getElementsByTagName("input");
-        for ( var j = 0; < groupboxes.length; j++ ) {
+        for ( var j = 0; j < groupboxes.length; j++ ) {
             if ( groupboxes[j].value == "phil" ) {
                 if ( allTruePhil ) { groupboxes[j].checked = true; }
                 else if ( !allFalsePhil ) { groupboxes[j].checked = false; }
                 else { groupboxes[j].intermediate = true; }
             }
+            else if ( groupboxes[j].value == "chris" ) {
+                if ( allTrueChris ) { groupboxes[j].checked = true; }
+                else if ( !allFalseChris ) { groupboxes[j].checked = false; }
+                else { groupboxes[j].intermediate = true; }
+            }
         }
-
-
     }
 }
 
@@ -276,14 +280,16 @@ function activityChange( box, isGroup ) {
     }
     groupname = divElem.getAttribute("id");
 
-    //3. Gather other information
+    //2. Gather other information
     var serverID = box.getAttribute("value");
     var value = box.checked;
     var url = box.getAttribute("name");
 
     //3. Update cachedDefinitions
     updateActivityInCachedDefinitions(groupname, isGroup, url, serverID, value);
-    console.log("updateActivity("+groupname+", "+isGroup+", "+url+", "+serverID+", "+value+");");
+
+    //4. Rewrite Definition HTML
+    processNewDefinitions();
 }
 
 /*
