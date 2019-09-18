@@ -10,10 +10,10 @@
     <div id="stateRemoteField">Remote: <div id="stateRemote">Not Yet</div></div>
 </div>
 <div id="DefinitionInput">
-    <h1>DNS definitions:</h1>
     <div id="commitTextArea">
         <button onClick="commitTextArea()">Commit changes</button>
     </div>
+    <h1>DNS definitions:</h1>
     <textarea onchange="tidyInput()" id="mainInput" cols="50" rows="10">example.de/1.1.1.1</textarea>
 </div>
 <div id="Definitions">

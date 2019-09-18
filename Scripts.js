@@ -158,6 +158,7 @@ window.setInterval(updateLocalDNSStates, 1000);
 //Update Definitions
 function mockfetch() {  //Mock for debugging
     cachedDefinitions = JSON.parse("{\"0\":{\"URL\":\"upd.avast2.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"avast\",\"activeForChris\":\"0\",\"activeForPhil\":\"1\"},\"1\":{\"URL\":\"update.avast1.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"avast\",\"activeForChris\":\"0\",\"activeForPhil\":\"1\"},\"2\":{\"URL\":\"up.google.de\",\"IP\":\"192.168.15.4\",\"groupname\":\"Chrome67\",\"activeForChris\":\"1\",\"activeForPhil\":\"0\"},\"3\":{\"URL\":\"update.google.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"Chrome67\",\"activeForChris\":\"1\",\"activeForPhil\":\"0\"},\"remoteState\":\"1569000000\"}");
+    processNewDefinitions();
 }
 
 function fetchRemoteDefinitions() {
@@ -188,12 +189,18 @@ function processNewDefinitions() {
         if ( currentGroupName != cachedDefinitions[i]["groupname"] ) {
             currentGroupName = cachedDefinitions[i]["groupname"];
             resHTML += "<div id=\"" + currentGroupName + "\">";
-            resHTML += "<h3 class=\"groupHeadLine\"><input type=\"checkbox\" name=\"group" + currentGroupName + "\">Group: " + currentGroupName + "</h3>";
-            resHTML += "<table><tr><th>Active</th><th>Domain Name</th><th>IP</th></tr>";
+            resHTML += "<h3 class=\"groupHeadLine\">";
+            resHTML += "<input type=\"checkbox\" value='chris' onclick='activityChange(this, true)' name='group'>";
+            resHTML += "<input type=\"checkbox\" value='phil' onclick='activityChange(this, true)' name='group'>";
+            resHTML += "Group: " + currentGroupName + "</h3>";
+            resHTML += "<table><tr><th>Chris</th><th>Phil</th></th><th>Domain</th><th>IP</th></tr>";
         }
 
         //2. Table rows for each element in group
-        resHTML += "<tr><td><input type=\"checkbox\" name=\""+cachedDefinitions[i]["URL"]+"\"></td>";
+        resHTML += "<tr><td><input type=\"checkbox\" value='chris' onclick='activityChange(this, false)' name=\""+cachedDefinitions[i]["URL"]+"\"";
+        resHTML += cachedDefinitions[i]["activeForChris"] ? " checked" : "" + "></td>";
+        resHTML += "<td><input type=\"checkbox\" value='phil' onclick='activityChange(this, false)' name=\""+cachedDefinitions[i]["URL"]+"\"></td>";
+        resHTML += cachedDefinitions[i]["activeForPhil"] ? " checked" : "" + "></td>";
         resHTML += "<td>"+cachedDefinitions[i]["URL"]+"</td>";
         resHTML += "<td>"+cachedDefinitions[i]["IP"]+"</td></tr>";
     }
@@ -201,10 +208,50 @@ function processNewDefinitions() {
     //Insert generated HTML in DOM
     document.getElementById("Definitions").innerHTML = resHTML;
 
+    //Adjust Groupcheckboxes
+    adjustGroupCheckboxTicks();
+
     //Add doubleclick event to edit
     addDblClickToTableMakingGroupEditable();
     return resHTML;
 }
+function adjustGroupCheckboxTicks() {
+    groups = document.getElementById("Definitions").getElementsByTagName("div");
+
+    //In every group
+    for ( var i = 0; i < groups.length; i++ ) {
+
+        //check if all single boxes are ticked
+        singleBoxes = groups[i].getElementsByTagName("table")[0].getElementsByTagName("input");
+
+        var allTrueChris = true;
+        var allFalseChris = false;
+        var allTruePhil = true;
+        var allFalsePhil = false;
+        for (var j = 0; j < singleBoxes.length; j++) {
+            if ( singleBoxes[j].value == "phil" ) {
+                allTruePhil &= singleBoxes[j].checked;
+                allFalsePhil |= singleBoxes[j].checked;
+            }
+            if ( singleBoxes[j].value == "chris" ) {
+                allTrueChris &= singleBoxes[j].checked;
+                allFalseChris |= singleBoxes[j].checked;
+            }
+        }
+        //Now set group boxes
+        groupboxes = groups[i].getElementsByTagName("h3")[0].getElementsByTagName("input");
+        for ( var j = 0; < groupboxes.length; j++ ) {
+            if ( groupboxes[j].value == "phil" ) {
+                if ( allTruePhil ) { groupboxes[j].checked = true; }
+                else if ( !allFalsePhil ) { groupboxes[j].checked = false; }
+                else { groupboxes[j].intermediate = true; }
+            }
+        }
+
+
+    }
+}
+
 window.onload = function() {fetchRemoteDefinitions(); };
 
 function addDblClickToTableMakingGroupEditable() {
@@ -220,4 +267,42 @@ function addDblClickToTableMakingGroupEditable() {
         }
     }
 }
+function activityChange( box, isGroup ) {
 
+    //1. find groupname
+    divElem = box;
+    while ( divElem.tagName.toUpperCase() != "DIV" ) {
+        divElem = divElem.parentElement;
+    }
+    groupname = divElem.getAttribute("id");
+
+    //3. Gather other information
+    var serverID = box.getAttribute("value");
+    var value = box.checked;
+    var url = box.getAttribute("name");
+
+    //3. Update cachedDefinitions
+    updateActivityInCachedDefinitions(groupname, isGroup, url, serverID, value);
+    console.log("updateActivity("+groupname+", "+isGroup+", "+url+", "+serverID+", "+value+");");
+}
+
+/*
+Updates the activity flags in the cachedDefinitions
+@param group        String  The groupname of the updated entry
+@param wholeGroup   Boolean If true, every URL of the group will be marked accordingly
+@param url          String  URL to be marked. Irrelevant if wholeGroup is true.
+@param serverID     String  ServerID of the DNSServer for whom the flag will be set
+@param value        Boolean True to set Definition as active
+ */
+function updateActivityInCachedDefinitions(group, wholeGroup, url, serverID, value) {
+    for (var i = 0; cachedDefinitions[i] != null; i++) {
+        if ( cachedDefinitions[i]["groupname"] == group && (wholeGroup || cachedDefinitions[i]["URL"] == url) ) {
+            if ( serverID == "phil" ) {
+                cachedDefinitions[i]["activeForPhil"] = value ? "1" : "0";
+            }
+            if ( serverID == "chris" ) {
+                cachedDefinitions[i]["activeForChris"] = value ? "1" : "0";
+            }
+        }
+    }
+}
