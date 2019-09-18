@@ -29,6 +29,10 @@ function tidyInput() {
         return false;
     }
 }
+function discardChanges() {
+    groupCurrentlyEdited = null;
+    document.getElementById("mainInput").value = "Double click definition to edit";
+}
 function commitTextArea() {
     //Make sure only valid inputs get commited
     if ( !tidyInput() ) { console.log("too dirty"); return false; }
@@ -42,7 +46,7 @@ function commitTextArea() {
         if ( inputLines[i].substr(0,3) == "#1-" ) {
             if (currentGroup == null) {
                 currentGroup = inputLines[i].substr(3);
-                updateGroupName(groupCurrentlyEdited, currentGroup);
+                updated |= updateGroupName(groupCurrentlyEdited, currentGroup);
             } else {
                 currentGroup = inputLines[i].substr(3);
             }
@@ -68,11 +72,19 @@ function uploadUpdatedDefCache() {
 }
 
 function updateGroupName(oldname, newname) {
+    var updated = false;
+
     for (var i = 0; cachedDefinitions[i] != null; i++) {
         if ( cachedDefinitions[i]["groupname"] == oldname ) {
             cachedDefinitions[i]["groupname"] = newname;
+            updated = true;
         }
     }
+    if (updated) {
+        cachedDefinitions["updatedGroupname"] = {"oldn": oldname, "newn": newname};
+        groupCurrentlyEdited = newname;
+    }
+    return updated;
 }
 
 function updateOrAddCachedDefinitions(group, url, ip) {
@@ -218,7 +230,6 @@ function processNewDefinitions() {
         resHTML += "<td>"+cachedDefinitions[i]["IP"]+"</td></tr>";
     }
 
-    console.log(resHTML);
     //Insert generated HTML in DOM
     document.getElementById("Definitions").innerHTML = resHTML;
 

@@ -90,6 +90,11 @@ if ($_GET["c"] == "setUpdatedDefinitions") {
         throw new Exception('Received content contained invalid JSON!');
     }
 
+    //1. Check if groupnames have changed
+    if ( !is_null($decoded["updatedGroupname"]) ) {
+        $query = "UPDATE Definitions SET GROUPNAME = '".$decoded["updatedGroupname"]["newn"]."' WHERE GROUPNAME = '".$decoded["updatedGroupname"]["oldn"]."';";
+        $mysqli->query($query);
+    }
 
     //Updating the DB
     $i = 0;

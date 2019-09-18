@@ -12,7 +12,8 @@
 </div>
 <div id="DefinitionInput">
     <div id="commitTextArea">
-        <button onClick="commitTextArea()">Commit changes</button>
+        <button onClick="discardChanges()">Discard</button>
+        <button onClick="commitTextArea()">Commit</button>
     </div>
     <h1>DNS definitions:</h1>
     <textarea onchange="tidyInput()" id="mainInput" cols="50" rows="10">Double click definition to edit</textarea>
