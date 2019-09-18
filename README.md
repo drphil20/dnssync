@@ -44,17 +44,17 @@ creates 2 Groups. One named "GroupName1" and one named "GroupName2"
 
 ## Backend functions
 backend.php offers the following functions:
-* `backend.php?c=updatedefinition&url=example.com&ip=1.1.1.1&gn=ExampleGroup` Creates an entry or updates the IP directed to by the url
-	* If IP is left blank, the entry will be deleted (set inactive)
+* `backend.php?c=setupdateddefinitions` Recieves a JSONObject from website containing all definitions
 * `backend.php?c=getCurrentStates` returns the local state (_timestamp_) and connection state ({"online", "offline"}) of all known DNS-Servers as JSON
-* `backend.php?c=setDefActiveFor?url=example.com&gn=ExampleGroup&server=chris`
-	* Sets the isActive Flag for the domain `example.com` in the group `ExampleGroup` for the DNS-Server with the ID `chris`
 * `backend.php?c=getCurrentRemoteState?server=chris?ls=1568710287`
     * Used by local DNSServer to ask the remoteServer for new definitions and tells it the local state
 * `backend.php?c=getAllDefinitionsAsJSONForWebsite`
     * Used by Website to display and manage all definitions
     * Called on startup of webapp and whenever `remotestate` > `websitestate`
-
+* `backend.php?c=getConfForDNSServer?server=chris`
+    * Used by local DNSServer to download the new definitions
+    * Formatted to be directly pasted into `dnsmasq.conf`
+    * Contains only the definitions that are flagged as active for the requesting server 
 ## MySQL DB Scheme
 * `Definitions(url, ip, groupname, phil, chris)` 
     * **PK** is (_url_, _groupname_)

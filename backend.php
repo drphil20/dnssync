@@ -137,5 +137,24 @@ if ($_GET["c"] == "getCurrentRemoteState") {
     print($remoteState);
 }
 
+if ( $_GET["c"] == "getConfForDNSServer" ) {
+    $serverid = $_GET["server"];
+
+    //Get all Definitions flagged as active for the defined server
+    $query = "SELECT * FROM Definitions WHERE ".$serverid." = '1';";
+    if ($result = $mysqli->query($query)) {
+        /* fetch associative array */
+        $resObj = array();
+
+        $i = 0;
+        while ($row = $result->fetch_assoc()) {
+            //Format: #address=/double-click.net/127.0.0.1
+            print("address=/" . $row["URL"] . "/" . $row["IP"] . "\n");
+
+            $i = $i + 1;
+        }
+        $result->close();
+    }
+}
 
 
