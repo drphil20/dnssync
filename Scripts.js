@@ -110,7 +110,7 @@ function updateOrAddCachedDefinitions(group, url, ip) {
     //3. Return results
     if (!found) {
         //If not updated, add at the bottom of the list
-        cachedDefinitions[i] = {URL: url, IP: ip, groupname: group, activeForChris: "1", activeForPhil: "1"};
+        cachedDefinitions[i] = {URL: url, IP: ip, groupname: group, activeForChris: "0", activeForPhil: "0"};
         changed = true;
     }
     return changed;
