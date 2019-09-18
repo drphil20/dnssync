@@ -1,3 +1,4 @@
+<meta http-equiv="cache-control" content="no-cache" />
 <html>
 <head>
     <script type="text/JavaScript" src="Scripts.js"></script>
@@ -14,7 +15,7 @@
         <button onClick="commitTextArea()">Commit changes</button>
     </div>
     <h1>DNS definitions:</h1>
-    <textarea onchange="tidyInput()" id="mainInput" cols="50" rows="10">example.de/1.1.1.1</textarea>
+    <textarea onchange="tidyInput()" id="mainInput" cols="50" rows="10">Double click definition to edit</textarea>
 </div>
 <div id="Definitions">
     <h2>Current Definitions</h2>

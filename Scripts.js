@@ -3,6 +3,8 @@ selectedDNSServer = ""; //Either {"", "chris", "phil"}; "" means all of them
 cachedDefinitions = null;
 knownRemoteState = null;
 
+groupCurrentlyEdited = null;
+
 function inputIsValid(text) {
     //Checks if the Text entered in the Textarea match the regualar expression to be valid DNS definitions
     var regEx = new RegExp("^.*\.[a-zA-Z]+\/(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
@@ -38,7 +40,12 @@ function commitTextArea() {
     var updated = false;
     for ( var i = 0; i < inputLines.length; i++) {
         if ( inputLines[i].substr(0,3) == "#1-" ) {
-            currentGroup = inputLines[i].substr(3);
+            if (currentGroup == null) {
+                currentGroup = inputLines[i].substr(3);
+                updateGroupName(groupCurrentlyEdited, currentGroup);
+            } else {
+                currentGroup = inputLines[i].substr(3);
+            }
             continue;
         }
         if ( currentGroup != null && inputLines[i] != "") {
@@ -48,19 +55,24 @@ function commitTextArea() {
         }
     }
 
-    //2. Compare to check if changed
+    //2. Upload if changes were made
     if ( updated ) {
         uploadUpdatedDefCache();
     }
-
-    //3. upload changed definitions
-    //alert("Hau raus");
 }
 function uploadUpdatedDefCache() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "backend.php?c=setUpdatedDefinitions", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(cachedDefinitions));
+}
+
+function updateGroupName(oldname, newname) {
+    for (var i = 0; cachedDefinitions[i] != null; i++) {
+        if ( cachedDefinitions[i]["groupname"] == oldname ) {
+            cachedDefinitions[i]["groupname"] = newname;
+        }
+    }
 }
 
 function updateOrAddCachedDefinitions(group, url, ip) {
@@ -94,6 +106,7 @@ function updateOrAddCachedDefinitions(group, url, ip) {
 
 //Writes the cached definitions of the specified group in the main Input field
 function loadGroupEdit(groupname) {
+    groupCurrentlyEdited = groupname;
     var fieldValue = "#1-"+groupname+"\n";
     for( i = 0; cachedDefinitions[i] != null; i++ ) {
         if( cachedDefinitions[i]["groupname"] != groupname ) { continue; }
@@ -290,6 +303,9 @@ function activityChange( box, isGroup ) {
 
     //4. Rewrite Definition HTML
     processNewDefinitions();
+
+    //5. Send changes
+    uploadUpdatedDefCache();
 }
 
 /*
