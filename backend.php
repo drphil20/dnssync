@@ -113,3 +113,29 @@ if ($_GET["c"] == "setUpdatedDefinitions") {
     else { print("Failed"); }
 
 }
+
+
+if ($_GET["c"] == "getCurrentRemoteState") {
+    $serverid = $_GET["server"];
+    $localstate = $_GET["ls"];
+
+    //Set local state
+    $query = "UPDATE DNSServers SET LOCAL_STATE = '".$localstate."' WHERE SERVERID = '".$serverid."';";
+    $mysqli->query($query);
+
+    //Update Last request time
+    $query = "UPDATE DNSServers SET LASTREQTIME = UNIX_TIMESTAMP() WHERE SERVERID = '".$serverid."';";
+    $mysqli->query($query);
+
+    //Get remote state
+    $remoteStateResult = $mysqli->query("SELECT REMOTE_STATE FROM DNSServers LIMIT 1;");
+    $remoteStateRow = $remoteStateResult->fetch_assoc();
+    $remoteState = $remoteStateRow["REMOTE_STATE"];
+    $remoteStateResult->close();
+
+    //return remote state
+    print($remoteState);
+}
+
+
+
