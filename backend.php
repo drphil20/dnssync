@@ -93,13 +93,18 @@ if ($_GET["c"] == "setUpdatedDefinitions") {
 
     //Updating the DB
     $i = 0;
-    $query = "";
+    $success = true;
     while (!is_null($decoded[$i])) {
-        $query .= "REPLACE into Definitions (URL, IP, GROUPNAME, chris, phil) VALUES ";
-        $query .= "(".$decoded[$i]["URL"].",".$decoded[$i]["IP"].",".$decoded[$i]["GROUPNAME"].",".$decoded[$i]["activeForChris"].",".$decoded[$i]["activeForPhil"].");";
+        $query = "REPLACE into Definitions (URL, IP, GROUPNAME, chris, phil) VALUES ";
+        $query .= "('".$decoded[$i]["URL"]."','".$decoded[$i]["IP"]."','".$decoded[$i]["groupname"]."',".$decoded[$i]["activeForChris"].",".$decoded[$i]["activeForPhil"].");";
+        $error &= $mysqli->query($query);
+        $i = $i +1;
     }
-    if ($mysqli->multi_query($query)) {
-        print("done: \n\n".$query);
-    }
+
+    //Set new state
+    $query = "UPDATE DNSServers SET REMOTE_STATE = UNIX_TIMESTAMP();";
+    $mysqli->query($query);
+    if ($success) { print("success"); }
+    else { print("Failed"); }
 
 }

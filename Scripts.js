@@ -58,12 +58,6 @@ function commitTextArea() {
 }
 function uploadUpdatedDefCache() {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            cachedDefinitions = JSON.parse(this.responseText);
-            processNewDefinitions();
-        }
-    };
     xhttp.open("POST", "backend.php?c=setUpdatedDefinitions", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(cachedDefinitions));
@@ -127,6 +121,7 @@ function displayNewLocalDNSStates(statesAsJSON) {
 
     //First grab remote state
     knownRemoteState = stateObj[0]["remotestate"];
+    document.getElementById("stateRemote").innerText = knownRemoteState;
     if (knownRemoteState > cachedDefinitions["remoteState"]) { fetchRemoteDefinitions(); }
 
     for ( i = 0; i < stateObj.length; i++ ) {
@@ -156,12 +151,12 @@ function displayNewLocalDNSStates(statesAsJSON) {
     }
 }
 //Uncomment following to enable automatic updating of states
-//window.setInterval(updateLocalDNSStates, 1000);
+window.setInterval(updateLocalDNSStates, 1000);
 
 
 
 //Update Definitions
-function mockfetch() {
+function mockfetch() {  //Mock for debugging
     cachedDefinitions = JSON.parse("{\"0\":{\"URL\":\"upd.avast2.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"avast\",\"activeForChris\":\"0\",\"activeForPhil\":\"1\"},\"1\":{\"URL\":\"update.avast1.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"avast\",\"activeForChris\":\"0\",\"activeForPhil\":\"1\"},\"2\":{\"URL\":\"up.google.de\",\"IP\":\"192.168.15.4\",\"groupname\":\"Chrome67\",\"activeForChris\":\"1\",\"activeForPhil\":\"0\"},\"3\":{\"URL\":\"update.google.com\",\"IP\":\"127.0.0.1\",\"groupname\":\"Chrome67\",\"activeForChris\":\"1\",\"activeForPhil\":\"0\"},\"remoteState\":\"1569000000\"}");
 }
 
@@ -210,6 +205,7 @@ function processNewDefinitions() {
     addDblClickToTableMakingGroupEditable();
     return resHTML;
 }
+window.onload = function() {fetchRemoteDefinitions(); };
 
 function addDblClickToTableMakingGroupEditable() {
     tables = document.getElementsByTagName("table");
