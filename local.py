@@ -24,7 +24,7 @@ def updateDefinitions():
     response = requests.get( url = callURL )
     pasteIntoConfigFile(response.text)
     localstate = lastknownremotestate
-    restartService
+    restartService()
 
 def pasteIntoConfigFile(pasteText):
     #1. Read old config file into memory
