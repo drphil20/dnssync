@@ -13,16 +13,18 @@ additionally: block connection to 8.8.8.8 and 8.8.4.4 (Google DNS Server)
 # Windows Defender
 dodsp.mp.microsoft.com.nsatc.net
 download.windowsupdate.com
-ctldl.windowsupdate.com
-update.microsoft.com
-delivery.mp.microsoft.com
+do.dsp.mp.microsoft.com
 v10.events.data.microsoft.com
 go.microsoft.com
+update.microsoft.com
+
+#ctldl.windowsupdate.com
+#delivery.mp.microsoft.com
+
+#geover-prod.do.dsp.mp.microsoft.com
 #cp601-prod.do.dsp.mp.microsoft.com
 #disc601-prod.do.dsp.mp.microsoft.com
 #prod.do.dsp.mp.microsoft.com
-#geover-prod.do.dsp.mp.microsoft.com
-do.dsp.mp.microsoft.com
 
 # checks if computer has connection to the internet (Windows 10)
 #dns.msftncsi.com
@@ -44,4 +46,35 @@ download.mcafee.com
 
 ### Operating Systems
 
+# Windows 7 (one of both is enough for a failure)
+download.windowsupdate.com
+www.update.microsoft.com
+
+# Windows 10 v1903
+update.microsoft.com
+v10.events.data.microsoft.com
+
+#ctldl.windowsupdate.com
+#delivery.mp.microsoft.com
+
+# Windows 10 v1803
+
 # TODO
+
+# iOS 12.4.1 (up to date)
+gdmf.apple.com
+gdmf.apple.com.akadns.net
+mesu.g.aaplimg.com
+mesu.apple.com
+mesu-cdn.apple.com.akadns.net
+
+#e17437.dscb.akamaiedge.net
+#oscp.apple.com
+#xp.apple.com
+#xp.itunes-apple.com.akadns.net
+#www-cdn.icloud.com.akadns.net
+#e6858.dsce9.akamaiedge.net
+#p71-availability.icloud.com
+#configuration.apple.com.akadns.net
+#gateway.fe.apple-dns.net
+#e4478.a.akamaiedge.net
