@@ -1,5 +1,6 @@
 import time
 import requests
+import os
 
 serverID = "phil"
 backendURL = "http://dnssync.bplaced.net/backend.php"
