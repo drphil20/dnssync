@@ -33,10 +33,11 @@ update.microsoft.com
 upd.kaspersky.com
 
 # McAfee
+download.mcafee.com
+
 #updatekeepalive.mcafee.com
 #us.mcafee.com
 #provision.ccs.mcafee.com
-download.mcafee.com
 #sadownload.mcafee.com
 #gti.mcafee.com
 
@@ -46,9 +47,17 @@ download.mcafee.com
 
 ### Operating Systems
 
+# Ubuntu 18.04
+archive.ubuntu.com
+changelogs.ubuntu.com	
+
 # Windows 7 (one of both is enough for a failure)
 download.windowsupdate.com
 www.update.microsoft.com
+
+# Windows 10 v1803
+update.microsoft.com
+v10.events.data.microsoft.com
 
 # Windows 10 v1903
 update.microsoft.com
@@ -56,10 +65,6 @@ v10.events.data.microsoft.com
 
 #ctldl.windowsupdate.com
 #delivery.mp.microsoft.com
-
-# Windows 10 v1803
-
-# TODO
 
 # iOS 12.4.1 (up to date)
 gdmf.apple.com
