@@ -66,6 +66,11 @@ v10.events.data.microsoft.com
 #ctldl.windowsupdate.com
 #delivery.mp.microsoft.com
 
+# macOS Mojave
+swscan.apple.com
+swdist.apple.com
+swcdn.apple.com
+
 # iOS 12.4.1 (up to date)
 gdmf.apple.com
 gdmf.apple.com.akadns.net
