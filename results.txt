@@ -43,7 +43,47 @@ download.mcafee.com
 
 ### Browsers
 
-# TODO
+Firefox 67:
+
+Called after instalation at start:
+
+incoming.telemetry.mozilla.com
+detectportal.firefox.com
+location.services.mozilla.com
+locprod1-elb-eu-west1.prod.mozaws.net
+aus5.mozilla.org    ##Block to prevent updates
+balrog-cloudfront.prod.mozaws.net
+www.mozilla.org
+cs9.wac.phicdn.net
+search.services.mozilla.com
+search.r53-2.services.mozilla.com
+push.services.mozilla.com
+autopush.prod.mozaws.net
+download.mozilla.org
+bouncer-bouncer-elb.prod.mozaws.net
+snippets.cdn.mozilla.net
+d228z91au11ukj.cloudfront.net
+shavar.services.mozilla.net
+shavar.prod.mozaws.net
+normandy.cdn.mozilla.net
+d6wjo2hisqfy2.cloudfront.net
+download.cdn.mozilla.net
+s2o47bxgqzkcc3.cloudfront.net
+mozilla.org
+classify-client.services.mozilla.com
+prod.normandy.prod.cloudops.mozgcp.net
+accounts.firefox.net
+accounts.firefox.com
+tracking-protection.cdn.mozilla.net
+d1zkz3k4cclnv6.cloudfront.net
+content-signature-2.cdn.mozilla.net
+d2nxq2uap88usk.cloudfront.net
+
+If aus5.mozilla.org is left open, but download servers are blocked: Update failed ff1.png
+Popup appears, asking the user to manually download the update from mozilla.com
+
+Block aus5.mozilla.org: ff2.png (Firefox is up to date)
+
 
 ### Operating Systems
 
